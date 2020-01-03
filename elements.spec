@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
 Version:        5.8
-Release:        4%{?dist}
+Release:        5%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -59,7 +59,11 @@ BuildRequires: python2-devel
 %endif
 BuildRequires: cmake >= 2.8.5
 
+%if 0%{?rhel} <= 7
+Requires: cmake%{?_isa}
+%else
 Requires: cmake-filesystem%{?_isa}
+%endif
 
 %global cmakedir %{_libdir}/cmake/ElementsProject
 
@@ -205,5 +209,8 @@ export PYTHONPATH="%{buildroot}%{python_sitearch}"
 %{docdir}
 
 %changelog
+* Fri Dec 03 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-5
+- Fix dependency for /usr/lib*/cmake on EPEL
+
 * Mon Oct 28 2019 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-4
 - Initial RPM
