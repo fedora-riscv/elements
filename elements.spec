@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
 Version:        5.8
-Release:        5%{?dist}
+Release:        6%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -25,6 +25,8 @@ Patch3:         elements_disable_latex.patch
 # Make sure this script runs both with Python 2 and 3
 # Backport from upstream develop branch
 Patch4:         elements_CTestXML2HTML_py23.patch
+# Should not set max-page-size. Reported to upstream, they will fix this.
+Patch5:         elements_flags_remove_page_size.patch
 
 BuildRequires: CCfits-devel
 BuildRequires: boost-devel >= 1.53
@@ -180,6 +182,9 @@ export PYTHONPATH="%{buildroot}%{python3_sitearch}"
 %{docdir}
 
 %changelog
+* Mon Feb 03 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-6
+- Remove flag max-page-size
+
 * Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.8-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
