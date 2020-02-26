@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
 Version:        5.8
-Release:        6%{?dist}
+Release:        7%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -182,6 +182,9 @@ export PYTHONPATH="%{buildroot}%{python3_sitearch}"
 %{docdir}
 
 %changelog
+* Wed Feb 26 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-7
+- Rebuild for Fedora 33
+
 * Mon Feb 03 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-6
 - Remove flag max-page-size
 
