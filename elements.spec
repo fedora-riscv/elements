@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
 Version:        5.8
-Release:        5%{?dist}
+Release:        6%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -27,6 +27,8 @@ Patch3:         elements_disable_latex.patch
 Patch4:         elements_CTestXML2HTML_py23.patch
 # __linux is not available in ppc64le
 Patch5:         elements_linux_macro.patch
+# Should not set max-page-size. Reported to upstream, they will fix this.
+Patch6:         elements_flags_remove_page_size.patch
 
 BuildRequires: CCfits-devel
 BuildRequires: boost-devel >= 1.53
@@ -209,6 +211,9 @@ export PYTHONPATH="%{buildroot}%{python_sitearch}"
 %{docdir}
 
 %changelog
+* Fri Mar 06 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-6
+- Remove flag max-page-size
+
 * Fri Dec 03 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-5
 - Fix dependency for /usr/lib*/cmake on EPEL
 
