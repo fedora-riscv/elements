@@ -214,7 +214,7 @@ export PYTHONPATH="%{buildroot}%{python_sitearch}"
 * Fri Mar 06 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-6
 - Remove flag max-page-size
 
-* Fri Dec 03 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-5
+* Fri Jan 03 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-5
 - Fix dependency for /usr/lib*/cmake on EPEL
 
 * Mon Oct 28 2019 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-4
