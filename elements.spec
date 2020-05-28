@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
 Version:        5.8
-Release:        8%{?dist}
+Release:        9%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -182,6 +182,9 @@ export PYTHONPATH="%{buildroot}%{python3_sitearch}"
 %{docdir}
 
 %changelog
+* Thu May 28 2020 Jonathan Wakely <jwakely@redhat.com> - 5.8-9
+- Rebuilt for Boost 1.73
+
 * Tue May 26 2020 Miro Hrončok <mhroncok@redhat.com> - 5.8-8
 - Rebuilt for Python 3.9
 
