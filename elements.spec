@@ -42,8 +42,11 @@ BuildRequires: python3-devel
 BuildRequires: python2
 BuildRequires: python2-pytest
 BuildRequires: python2-devel
+BuildRequires: python-enum34
+Requires:      python-enum34
 %endif
 BuildRequires: cmake >= 2.8.5
+BuildRequires: which
 
 %if 0%{?rhel} <= 7
 Requires: cmake%{?_isa}
@@ -114,6 +117,7 @@ cd build
 rm -rfv "%{buildroot}/%{confdir}/ElementsServices/testdata"
 
 %check
+export PYTHONPATH="%{buildroot}%{python_sitearch}"
 export ELEMENTS_CONF_PATH="%{_builddir}/ElementsKernel/auxdir/"
 cd build
 make test
