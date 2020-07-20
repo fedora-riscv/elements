@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
-Version:        5.8
-Release:        6%{?dist}
+Version:        5.10
+Release:        1%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -11,24 +11,8 @@ Source1:        cppreference-doxygen-web.tag.xml
 URL:            https://github.com/degauden/Elements.git
 # Remove Example programs and scripts, otherwise they will be installed
 Patch0:         elements_remove_examples.patch
-# Elements try to guess itself the lib directory, but it does not consider
-# 64 bits architectures supported by Fedora. It will override CMAKE_LIB_INSTALL_SUFFIX,
-# and stick to its mistaken guess (i.e. /usr/lib for anything that is not x86_64),
-# unless this patch is applied
-# https://github.com/degauden/Elements/pull/5
-Patch1:         elements_do_not_force_install_suffix.patch
-# Create libraries with sonames, and versioned name
-# https://github.com/degauden/Elements/pull/6
-Patch2:         elements_soversion.patch
 # Disable the compilation of PDF documentation
 Patch3:         elements_disable_latex.patch
-# Make sure this script runs both with Python 2 and 3
-# Backport from upstream develop branch
-Patch4:         elements_CTestXML2HTML_py23.patch
-# __linux is not available in ppc64le
-Patch5:         elements_linux_macro.patch
-# Should not set max-page-size. Reported to upstream, they will fix this.
-Patch6:         elements_flags_remove_page_size.patch
 
 BuildRequires: CCfits-devel
 BuildRequires: boost-devel >= 1.53
@@ -70,7 +54,7 @@ Requires: cmake-filesystem%{?_isa}
 %global cmakedir %{_libdir}/cmake/ElementsProject
 
 %global makedir %{_datadir}/Elements/make
-%global confdir %{_datadir}/Elements
+%global confdir %{_datadir}/conf
 %global auxdir %{_datadir}/auxdir
 %global docdir %{_docdir}/Elements
 
@@ -115,13 +99,11 @@ mkdir build
 # Copy cppreference-doxygen-web.tag.xml into the build directory
 mkdir -p build/doc/doxygen
 cp "%{SOURCE1}" "build/doc/doxygen"
-# Make sure auxiliary files used only for testing are not installed
-rm -r "ElementsKernel/auxdir/ElementsKernel/tests"
 # Build
 cd build
-%cmake -DELEMENTS_BUILD_TESTS=OFF -DSQUEEZED_INSTALL:BOOL=ON -DINSTALL_DOC:BOOL=ON \
+%cmake -DELEMENTS_BUILD_TESTS=ON -DINSTALL_TESTS=OFF -DSQUEEZED_INSTALL:BOOL=ON -DINSTALL_DOC:BOOL=ON \
     -DUSE_SPHINX=OFF --no-warn-unused-cli \
-    -DCMAKE_LIB_INSTALL_SUFFIX=%{_lib} -DUSE_VERSIONED_LIBRARIES=ON ${EXTRA_CMAKE_FLAGS} \
+    -DCMAKE_LIB_INSTALL_SUFFIX=%{_lib} -DUSE_VERSIONED_LIBRARIES=ON ${EXTRA_CMAKE_FLAGS}\
     ..
 %make_build
 
@@ -129,14 +111,15 @@ cd build
 export VERBOSE=1
 cd build
 %make_install
+rm -rfv "%{buildroot}/%{confdir}/ElementsServices/testdata"
 
 %check
-export PYTHONPATH="%{buildroot}%{python_sitearch}"
-%{buildroot}/%{_bindir}/CreateElementsProject --help
-
+export ELEMENTS_CONF_PATH="%{_builddir}/ElementsKernel/auxdir/"
+cd build
+make test
 
 %files
-%dir %{confdir}
+%{confdir}/
 %dir %{cmakedir}
 %{cmakedir}/ElementsEnvironment.xml
 
@@ -176,6 +159,8 @@ export PYTHONPATH="%{buildroot}%{python_sitearch}"
 %{_libdir}/libElementsServices.so
 %{_includedir}/ELEMENTS_VERSION.h
 %{_includedir}/ELEMENTS_INSTALL.h
+%{_includedir}/ElementsKernel_export.h
+%{_includedir}/ElementsServices_export.h
 %{_includedir}/ElementsKernel/
 %{_includedir}/ElementsServices/
 
@@ -203,6 +188,7 @@ export PYTHONPATH="%{buildroot}%{python_sitearch}"
 %{cmakedir}/ElementsKernelExport.cmake
 %{cmakedir}/ElementsConfigVersion.cmake
 %{cmakedir}/ElementsConfig.cmake
+%{cmakedir}/GetGitRevisionDescription.cmake
 
 %{makedir}
 
@@ -211,6 +197,9 @@ export PYTHONPATH="%{buildroot}%{python_sitearch}"
 %{docdir}
 
 %changelog
+* Mon Jul 20 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.10-1
+- Update for upstream release 5.10
+
 * Fri Mar 06 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-6
 - Remove flag max-page-size
 
