@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
 Version:        5.10
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -71,29 +71,25 @@ Documentation for package %{name}
 
 %build
 export VERBOSE=1
-EXTRA_CMAKE_FLAGS="-DPYTHON_EXPLICIT_VERSION=3 -DUSE_ENV_FLAGS=ON"
-mkdir build
-# Copy cppreference-doxygen-web.tag.xml into the build directory
-mkdir -p build/doc/doxygen
-cp "%{SOURCE1}" "build/doc/doxygen"
 # Build
-cd build
 %cmake -DELEMENTS_BUILD_TESTS=ON -DINSTALL_TESTS=OFF -DSQUEEZED_INSTALL:BOOL=ON -DINSTALL_DOC:BOOL=ON \
     -DUSE_SPHINX=OFF -DPYTHON_EXPLICIT_VERSION=3 --no-warn-unused-cli \
     -DCMAKE_LIB_INSTALL_SUFFIX=%{_lib} -DUSE_VERSIONED_LIBRARIES=ON \
-    ..
-%make_build
+    -DUSE_ENV_FLAGS=ON
+# Copy cppreference-doxygen-web.tag.xml into the build directory
+mkdir -p "%{_vpath_builddir}/doc/doxygen"
+cp -v "%{SOURCE1}" "%{_vpath_builddir}/doc/doxygen"
+
+%cmake_build
 
 %install
 export VERBOSE=1
-cd build
-%make_install
+%cmake_install
 rm -rfv "%{buildroot}/%{confdir}/ElementsServices/testdata"
 
 %check
 export ELEMENTS_CONF_PATH="%{_builddir}/ElementsKernel/auxdir/"
-cd build
-make test
+%ctest
 
 %files
 %{confdir}/
@@ -170,6 +166,9 @@ make test
 %{docdir}
 
 %changelog
+* Mon Jul 20 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.10-2
+* Use new cmake macros
+
 * Fri Jul 17 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.10-1
 - Update for upstream release 5.10
 
