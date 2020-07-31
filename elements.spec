@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
 Version:        5.10
-Release:        3%{?dist}
+Release:        1%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -27,8 +27,10 @@ BuildRequires: wcslib-devel
 # Required for the generation of the documentation
 BuildRequires: doxygen
 BuildRequires: graphviz
-BuildRequires: texlive-latex 
+BuildRequires: texlive-latex
+%if 0%{?fedora} >= 30
 BuildRequires: texlive-newunicodechar
+%endif
 BuildRequires: texlive-dvips
 
 BuildRequires: gcc-c++ > 4.7
@@ -36,6 +38,7 @@ BuildRequires: python3
 BuildRequires: python3-pytest
 BuildRequires: python3-devel
 BuildRequires: cmake >= 2.8.5
+BuildRequires: which
 
 Requires: cmake-filesystem%{?_isa}
 
@@ -72,24 +75,29 @@ Documentation for package %{name}
 %build
 export VERBOSE=1
 # Build
+mkdir "%{_vpath_builddir}"
+pushd "%{_vpath_builddir}"
 %cmake -DELEMENTS_BUILD_TESTS=ON -DINSTALL_TESTS=OFF -DSQUEEZED_INSTALL:BOOL=ON -DINSTALL_DOC:BOOL=ON \
     -DUSE_SPHINX=OFF -DPYTHON_EXPLICIT_VERSION=3 --no-warn-unused-cli \
     -DCMAKE_LIB_INSTALL_SUFFIX=%{_lib} -DUSE_VERSIONED_LIBRARIES=ON \
-    -DUSE_ENV_FLAGS=ON
+    -DUSE_ENV_FLAGS=ON "${OLDPWD}"
+popd
 # Copy cppreference-doxygen-web.tag.xml into the build directory
 mkdir -p "%{_vpath_builddir}/doc/doxygen"
 cp -v "%{SOURCE1}" "%{_vpath_builddir}/doc/doxygen"
 
-%cmake_build
+%make_build -C "%{_vpath_builddir}"
 
 %install
 export VERBOSE=1
-%cmake_install
+%make_install -C "%{_vpath_builddir}"
 rm -rfv "%{buildroot}/%{confdir}/ElementsServices/testdata"
 
 %check
 export ELEMENTS_CONF_PATH="%{_builddir}/ElementsKernel/auxdir/"
-%ctest
+pushd "%{_vpath_builddir}"
+ctest
+popd
 
 %files
 %{confdir}/
@@ -166,32 +174,6 @@ export ELEMENTS_CONF_PATH="%{_builddir}/ElementsKernel/auxdir/"
 %{docdir}
 
 %changelog
-* Mon Jul 27 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.10-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+* Fri Jul 31 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.10-1
+- Initial RPM for EPEL 8
 
-* Mon Jul 20 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.10-2
-* Use new cmake macros
-
-* Fri Jul 17 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.10-1
-- Update for upstream release 5.10
-
-* Fri May 29 2020 Jonathan Wakely <jwakely@redhat.com> - 5.8-10
-- Rebuilt for Boost 1.73 and Python 3.9 together
-
-* Thu May 28 2020 Jonathan Wakely <jwakely@redhat.com> - 5.8-9
-- Rebuilt for Boost 1.73
-
-* Tue May 26 2020 Miro Hrončok <mhroncok@redhat.com> - 5.8-8
-- Rebuilt for Python 3.9
-
-* Wed Feb 26 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-7
-- Rebuild for Fedora 33
-
-* Mon Feb 03 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-6
-- Remove flag max-page-size
-
-* Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.8-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
-
-* Mon Oct 28 2019 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-4
-- Initial RPM
