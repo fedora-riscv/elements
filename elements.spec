@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
 Version:        5.10
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -166,13 +166,16 @@ export ELEMENTS_CONF_PATH="%{_builddir}/ElementsKernel/auxdir/"
 %{docdir}
 
 %changelog
+* Thu Oct 15 2020 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> 5.10-4
+- Rebuilt for Fedora 34
+
 * Mon Jul 27 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.10-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
 
-* Mon Jul 20 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.10-2
+* Mon Jul 20 2020 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> 5.10-2
 * Use new cmake macros
 
-* Fri Jul 17 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.10-1
+* Fri Jul 17 2020 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> 5.10-1
 - Update for upstream release 5.10
 
 * Fri May 29 2020 Jonathan Wakely <jwakely@redhat.com> - 5.8-10
@@ -184,14 +187,14 @@ export ELEMENTS_CONF_PATH="%{_builddir}/ElementsKernel/auxdir/"
 * Tue May 26 2020 Miro Hrončok <mhroncok@redhat.com> - 5.8-8
 - Rebuilt for Python 3.9
 
-* Wed Feb 26 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-7
+* Wed Feb 26 2020 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> 5.8-7
 - Rebuild for Fedora 33
 
-* Mon Feb 03 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-6
+* Mon Feb 03 2020 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> 5.8-6
 - Remove flag max-page-size
 
 * Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.8-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
-* Mon Oct 28 2019 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-4
+* Mon Oct 28 2019 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> 5.8-4
 - Initial RPM
