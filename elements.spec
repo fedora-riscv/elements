@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
 Version:        5.10
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -170,6 +170,9 @@ make test
 %{docdir}
 
 %changelog
+* Mon Dec 07 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.10-2
+- Rebuilt for gcc 10.2
+
 * Fri Jul 17 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.10-1
 - Update for upstream release 5.10
 
