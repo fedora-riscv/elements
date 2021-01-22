@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
 Version:        5.10
-Release:        5%{?dist}
+Release:        6%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -166,6 +166,9 @@ export ELEMENTS_CONF_PATH="%{_builddir}/ElementsKernel/auxdir/"
 %{docdir}
 
 %changelog
+* Fri Jan 22 2021 Jonathan Wakely <jwakely@redhat.com> - 5.10-6
+- Rebuilt for Boost 1.75
+
 * Mon Dec 07 2020 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> 5.10-5
 - Rebuilt for gcc 11.0
 
