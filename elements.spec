@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
-Version:        5.10
-Release:        8%{?dist}
+Version:        5.12
+Release:        1%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -27,9 +27,6 @@ BuildRequires: wcslib-devel
 # Required for the generation of the documentation
 BuildRequires: doxygen
 BuildRequires: graphviz
-BuildRequires: texlive-latex 
-BuildRequires: texlive-newunicodechar
-BuildRequires: texlive-dvips
 
 BuildRequires: gcc-c++ > 4.7
 BuildRequires: python3
@@ -136,6 +133,7 @@ export ELEMENTS_CONF_PATH="%{_builddir}/ElementsKernel/auxdir/"
 %{cmakedir}/ElementsBuildEnvironment.xml
 %{cmakedir}/ElementsBuildFlags.cmake
 %{cmakedir}/ElementsCoverage.cmake
+%{cmakedir}/ElementsDefaults.cmake
 %{cmakedir}/ElementsDocumentation.cmake
 %{cmakedir}/ElementsLocations.cmake
 %{cmakedir}/ElementsProjectConfig.cmake
@@ -166,6 +164,9 @@ export ELEMENTS_CONF_PATH="%{_builddir}/ElementsKernel/auxdir/"
 %{docdir}
 
 %changelog
+* Fri Feb 05 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 5.12-1
+- Release 5.12
+
 * Thu Feb 04 2021 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> - 5.10-8
 - Rebuilt for cfitsio 3.490
 
