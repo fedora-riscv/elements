@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
-Version:        5.10
-Release:        2%{?dist}
+Version:        5.12
+Release:        1%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -27,9 +27,6 @@ BuildRequires: wcslib-devel
 # Required for the generation of the documentation
 BuildRequires: doxygen
 BuildRequires: graphviz
-BuildRequires: texlive-latex 
-BuildRequires: texlive-newunicodechar
-BuildRequires: texlive-dvips
 
 BuildRequires: gcc-c++ > 4.7
 BuildRequires: python3
@@ -140,6 +137,7 @@ make test
 %{cmakedir}/ElementsBuildEnvironment.xml
 %{cmakedir}/ElementsBuildFlags.cmake
 %{cmakedir}/ElementsCoverage.cmake
+%{cmakedir}/ElementsDefaults.cmake
 %{cmakedir}/ElementsDocumentation.cmake
 %{cmakedir}/ElementsLocations.cmake
 %{cmakedir}/ElementsProjectConfig.cmake
@@ -170,6 +168,9 @@ make test
 %{docdir}
 
 %changelog
+* Fri Feb 05 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 5.12-1
+- Release 5.12
+
 * Mon Dec 07 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.10-2
 - Rebuilt for gcc 10.2
 
@@ -185,14 +186,14 @@ make test
 * Tue May 26 2020 Miro Hrončok <mhroncok@redhat.com> - 5.8-8
 - Rebuilt for Python 3.9
 
-* Wed Feb 26 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-7
+* Wed Feb 26 2020 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> 5.8-7
 - Rebuild for Fedora 33
 
-* Mon Feb 03 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-6
+* Mon Feb 03 2020 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> 5.8-6
 - Remove flag max-page-size
 
 * Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.8-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
-* Mon Oct 28 2019 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-4
+* Mon Oct 28 2019 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> 5.8-4
 - Initial RPM
