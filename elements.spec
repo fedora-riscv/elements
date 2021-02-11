@@ -1,6 +1,6 @@
 Summary:        A C++/Python build framework
 Name:           elements
-Version:        5.10
+Version:        5.12
 Release:        1%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
@@ -27,11 +27,6 @@ BuildRequires: wcslib-devel
 # Required for the generation of the documentation
 BuildRequires: doxygen
 BuildRequires: graphviz
-BuildRequires: texlive-latex
-%if 0%{?fedora} >= 30
-BuildRequires: texlive-newunicodechar
-%endif
-BuildRequires: texlive-dvips
 
 BuildRequires: gcc-c++ > 4.7
 %if 0%{?fedora} >= 30
@@ -171,6 +166,7 @@ make test
 %{cmakedir}/ElementsBuildEnvironment.xml
 %{cmakedir}/ElementsBuildFlags.cmake
 %{cmakedir}/ElementsCoverage.cmake
+%{cmakedir}/ElementsDefaults.cmake
 %{cmakedir}/ElementsDocumentation.cmake
 %{cmakedir}/ElementsLocations.cmake
 %{cmakedir}/ElementsProjectConfig.cmake
@@ -201,6 +197,9 @@ make test
 %{docdir}
 
 %changelog
+* Fri Feb 05 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 5.12-1
+- Release 5.12
+
 * Mon Jul 20 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.10-1
 - Update for upstream release 5.10
 
@@ -210,5 +209,5 @@ make test
 * Fri Jan 03 2020 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-5
 - Fix dependency for /usr/lib*/cmake on EPEL
 
-* Mon Oct 28 2019 Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com> 5.8-4
+* Mon Oct 28 2019 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> 5.8-4
 - Initial RPM
