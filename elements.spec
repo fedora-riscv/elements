@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
 Version:        5.12
-Release:        7%{?dist}
+Release:        8%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -164,6 +164,9 @@ export ELEMENTS_CONF_PATH="%{_builddir}/ElementsKernel/auxdir/"
 %{docdir}
 
 %changelog
+* Wed Aug 11 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 5.12-8
+- Rebuild after f35 branching
+
 * Mon Aug 09 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 5.12-7
 - Rebuild for gcc 11.2
 
