@@ -1,9 +1,9 @@
 Summary:        A C++/Python build framework
 Name:           elements
-Version:        5.12
-Release:        8%{?dist}
+Version:        5.12.0
+Release:        9%{?dist}
 License:        LGPLv3+
-Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
+Source0:        https://github.com/astrorama/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
 # It is downloaded from:
 # https://upload.cppreference.com/w/File:cppreference-doxygen-web.tag.xml
@@ -164,6 +164,9 @@ export ELEMENTS_CONF_PATH="%{_builddir}/ElementsKernel/auxdir/"
 %{docdir}
 
 %changelog
+* Thu Dec 16 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 5.12.0-9
+- Add patch number to version
+
 * Wed Aug 11 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 5.12-8
 - Rebuild after f35 branching
 
