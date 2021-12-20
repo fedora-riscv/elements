@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
 Version:        5.12.0
-Release:        9%{?dist}
+Release:        10%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/astrorama/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -13,6 +13,8 @@ URL:            https://github.com/degauden/Elements.git
 Patch0:         elements_remove_examples.patch
 # Disable the compilation of PDF documentation
 Patch3:         elements_disable_latex.patch
+# Fix tests for Python 3.11
+Patch4:         python-3.11.patch
 
 BuildRequires: CCfits-devel
 BuildRequires: boost-devel >= 1.53
@@ -164,6 +166,9 @@ export ELEMENTS_CONF_PATH="%{_builddir}/ElementsKernel/auxdir/"
 %{docdir}
 
 %changelog
+* Mon Dec 20 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 5.12.0-10
+- Fix tests for Python 3.11
+
 * Thu Dec 16 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 5.12.0-9
 - Add patch number to version
 
