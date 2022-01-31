@@ -1,3 +1,0 @@
-# elements
-
-The elements package
