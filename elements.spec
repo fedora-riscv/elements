@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
-Version:        5.12.0
-Release:        11%{?dist}
+Version:        6.0.1
+Release:        1%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/astrorama/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -15,6 +15,8 @@ Patch0:         elements_remove_examples.patch
 Patch3:         elements_disable_latex.patch
 # Fix tests for Python 3.11
 Patch4:         python-3.11.patch
+# Fix a buggy test
+Patch5:         elements_tests.patch
 
 BuildRequires: CCfits-devel
 BuildRequires: boost-devel >= 1.53
@@ -34,6 +36,7 @@ BuildRequires: gcc-c++ > 4.7
 BuildRequires: python3
 BuildRequires: python3-pytest
 BuildRequires: python3-devel
+BuildRequires: python3-sphinx
 BuildRequires: cmake >= 2.8.5
 
 Requires: cmake-filesystem%{?_isa}
@@ -85,6 +88,7 @@ cp -v "%{SOURCE1}" "%{_vpath_builddir}/doc/doxygen"
 export VERBOSE=1
 %cmake_install
 rm -rfv "%{buildroot}/%{confdir}/ElementsServices/testdata"
+rm -fv "%{buildroot}/%{_bindir}/"*_test
 
 %check
 export ELEMENTS_CONF_PATH="%{_builddir}/ElementsKernel/auxdir/"

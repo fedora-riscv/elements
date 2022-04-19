@@ -1,8 +1,8 @@
 diff --git a/cmake/doc/Doxyfile.in b/cmake/doc/Doxyfile.in
-index 048ba47..e765261 100644
+index 4c5e11a9..fc48301f 100644
 --- a/cmake/doc/Doxyfile.in
 +++ b/cmake/doc/Doxyfile.in
-@@ -1228,7 +1228,7 @@ SERVER_BASED_SEARCH = NO
+@@ -1215,7 +1215,7 @@ SERVER_BASED_SEARCH = NO
  # If the GENERATE_LATEX tag is set to YES (the default) Doxygen will
  # generate Latex output.
  
@@ -11,7 +11,7 @@ index 048ba47..e765261 100644
  
  # The LATEX_OUTPUT tag is used to specify where the LaTeX docs will be put.
  # If a relative path is entered the value of OUTPUT_DIRECTORY will be
-@@ -1292,7 +1292,7 @@ PDF_HYPERLINKS = YES
+@@ -1279,7 +1279,7 @@ PDF_HYPERLINKS = YES
  # plain latex in the generated Makefile. Set this option to YES to get a
  # higher quality PDF documentation.
  

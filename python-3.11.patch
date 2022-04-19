@@ -1,11 +1,3 @@
-commit 4adeb7541a2c5aaf581478251c450e1184addfa0
-Author: Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com>
-Date:   Mon Dec 20 10:02:35 2021 +0100
-
-    failUnlessRaises were deprecated in Python 3.1
-    
-    and they will be removed in Python 3.11
-
 diff --git a/cmake/scripts/EnvConfig/TestEnvOps.py b/cmake/scripts/EnvConfig/TestEnvOps.py
 index 0d2f3d0b..02a44da8 100644
 --- a/cmake/scripts/EnvConfig/TestEnvOps.py
