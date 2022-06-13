@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
 Version:        6.0.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/astrorama/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -170,6 +170,9 @@ export ELEMENTS_CONF_PATH="%{_builddir}/ElementsKernel/auxdir/"
 %{docdir}
 
 %changelog
+* Mon Jun 13 2022 Python Maint <python-maint@redhat.com> - 6.0.1-3
+- Rebuilt for Python 3.11
+
 * Wed May 04 2022 Thomas Rodgers <trodgers@redhat.com> - 6.0.1-2
 - Rebuilt for Boost 1.78
 
