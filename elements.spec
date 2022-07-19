@@ -1,6 +1,6 @@
 Summary:        A C++/Python build framework
 Name:           elements
-Version:        5.12
+Version:        6.0.1
 Release:        1%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
@@ -11,6 +11,10 @@ Source1:        cppreference-doxygen-web.tag.xml
 URL:            https://github.com/degauden/Elements.git
 # Remove Example programs and scripts, otherwise they will be installed
 Patch0:         elements_remove_examples.patch
+# gcc 4.8 fails to cast a unique_ptr
+Patch1:         elements_return_unique_ptr.patch
+# sphinx not installed as part of the build
+Patch2:         elements_squeezed_install_test.patch
 # Disable the compilation of PDF documentation
 Patch3:         elements_disable_latex.patch
 
@@ -110,6 +114,7 @@ export VERBOSE=1
 cd build
 %make_install
 rm -rfv "%{buildroot}/%{confdir}/ElementsServices/testdata"
+rm -fv "%{buildroot}/%{_bindir}/"*_test
 
 %check
 export PYTHONPATH="%{buildroot}%{python_sitearch}"
@@ -197,6 +202,9 @@ make test
 %{docdir}
 
 %changelog
+* Tue Jul 19 2022 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 6.0.1-1
+- Elements 6.0.1
+
 * Fri Feb 05 2021 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 5.12-1
 - Release 5.12
 

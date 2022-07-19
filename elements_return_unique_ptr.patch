@@ -1,0 +1,13 @@
+diff --git a/ElementsKernel/src/Lib/Logging.cpp b/ElementsKernel/src/Lib/Logging.cpp
+index 2dd639e9..be443506 100644
+--- a/ElementsKernel/src/Lib/Logging.cpp
++++ b/ElementsKernel/src/Lib/Logging.cpp
+@@ -55,7 +55,7 @@ static const std::map<string, const int> LOG_LEVEL{{"FATAL", Priority::FATAL},
+ unique_ptr<Layout> getLogLayout() {
+   auto layout = make_unique<log4cpp::PatternLayout>();
+   layout->setConversionPattern("%d{%FT%T%Z} %c %5p : %m%n");
+-  return layout;
++  return unique_ptr<Layout>(std::move(layout));
+ }
+ 
+ Logging::Logging(Category& log4cppLogger) : m_log4cppLogger(log4cppLogger) {}
