@@ -1,7 +1,7 @@
 Summary:        A C++/Python build framework
 Name:           elements
 Version:        6.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        LGPLv3+
 Source0:        https://github.com/degauden/Elements/archive/%{version}/%{name}-%{version}.tar.gz
 # Elements use this file to link the documentation to cppreference.com
@@ -19,7 +19,7 @@ Patch2:         elements_squeezed_install_test.patch
 Patch3:         elements_disable_latex.patch
 
 BuildRequires: CCfits-devel
-BuildRequires: boost-devel >= 1.53
+BuildRequires: boost169-devel >= 1.69
 BuildRequires: cfitsio-devel
 BuildRequires: cppunit-devel
 BuildRequires: fftw-devel
@@ -105,6 +105,7 @@ cp "%{SOURCE1}" "build/doc/doxygen"
 cd build
 %cmake -DELEMENTS_BUILD_TESTS=ON -DINSTALL_TESTS=OFF -DSQUEEZED_INSTALL:BOOL=ON -DINSTALL_DOC:BOOL=ON \
     -DUSE_SPHINX=OFF --no-warn-unused-cli \
+    -DBOOST_INCLUDEDIR=/usr/include/boost169/ -DBOOST_LIBRARYDIR=/usr/lib64/boost169/ -DBoost_NO_SYSTEM_PATHS=ON -DBoost_ADDITIONAL_VERSIONS=1.69 \
     -DCMAKE_LIB_INSTALL_SUFFIX=%{_lib} -DUSE_VERSIONED_LIBRARIES=ON ${EXTRA_CMAKE_FLAGS}\
     ..
 %make_build
@@ -202,6 +203,9 @@ make test
 %{docdir}
 
 %changelog
+* Mon Oct 24 2022 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 6.0.1-2
+- Build with boost 1.69
+
 * Tue Jul 19 2022 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 6.0.1-1
 - Elements 6.0.1
 
