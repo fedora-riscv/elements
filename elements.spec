@@ -103,9 +103,11 @@ mkdir -p build/doc/doxygen
 cp "%{SOURCE1}" "build/doc/doxygen"
 # Build
 cd build
+export BOOST_INCLUDEDIR=/usr/include/boost169/
+export BOOST_LIBRARYDIR=/usr/lib64/boost169/
+export Boost_ADDITIONAL_VERSIONS=1.69
 %cmake -DELEMENTS_BUILD_TESTS=ON -DINSTALL_TESTS=OFF -DSQUEEZED_INSTALL:BOOL=ON -DINSTALL_DOC:BOOL=ON \
     -DUSE_SPHINX=OFF --no-warn-unused-cli \
-    -DBOOST_INCLUDEDIR=/usr/include/boost169/ -DBOOST_LIBRARYDIR=/usr/lib64/boost169/ -DBoost_NO_SYSTEM_PATHS=ON -DBoost_ADDITIONAL_VERSIONS=1.69 \
     -DCMAKE_LIB_INSTALL_SUFFIX=%{_lib} -DUSE_VERSIONED_LIBRARIES=ON ${EXTRA_CMAKE_FLAGS}\
     ..
 %make_build
