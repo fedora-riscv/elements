@@ -1,0 +1,148 @@
+diff --git a/ElementsKernel/auxdir/ElementsKernel/templates/PythonTest_template.py.in b/ElementsKernel/auxdir/ElementsKernel/templates/PythonTest_template.py.in
+index f4e01e8f..81a7193d 100644
+--- a/ElementsKernel/auxdir/ElementsKernel/templates/PythonTest_template.py.in
++++ b/ElementsKernel/auxdir/ElementsKernel/templates/PythonTest_template.py.in
+@@ -23,7 +23,7 @@
+ :author: %(AUTHOR)s
+ """
+ 
+-import py.test
++import pytest
+ import %(MODULENAME)s.%(PYTHONMODULE)s
+ 
+ class Test%(PYTHONMODULE)s(object):
+diff --git a/ElementsServices/tests/python/DataSync_test.py b/ElementsServices/tests/python/DataSync_test.py
+index 89415c34..f8820684 100644
+--- a/ElementsServices/tests/python/DataSync_test.py
++++ b/ElementsServices/tests/python/DataSync_test.py
+@@ -16,9 +16,8 @@
+ # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ #
+ 
+-
+ import os.path
+-import py.test
++import pytest
+ import unittest
+ 
+ from ElementsKernel.Temporary import TempDir, TempEnv
+@@ -54,7 +53,7 @@ class TestDataSync(unittest.TestCase):
+ 
+     def checkFallback(self, fallback_config):
+         sync = DataSync(aBadConnectionConfig(), theDependencyConfig())
+-        with py.test.raises(Exception):
++        with pytest.raises(Exception):
+             sync.download()
+         sync.downloadWithFallback(fallback_config)
+         for file in theLocalFiles():
+diff --git a/ElementsServices/tests/python/DataSynchronizer_test.py b/ElementsServices/tests/python/DataSynchronizer_test.py
+index fde4413b..fa465e8e 100644
+--- a/ElementsServices/tests/python/DataSynchronizer_test.py
++++ b/ElementsServices/tests/python/DataSynchronizer_test.py
+@@ -16,9 +16,8 @@
+ # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ #
+ 
+-
+ import unittest
+-import py.test
++import pytest
+ import os
+ 
+ from ElementsKernel.Temporary import TempDir, TempEnv
+@@ -35,14 +34,14 @@ class TestDataSynchronizer(unittest.TestCase):
+         self.m_top_dir = TempDir(prefix="DataSync_test")
+         self.m_env = TempEnv()
+         self.m_env["WORKSPACE"] = os.path.join(self.m_top_dir.path(), "workspace")
+-        
++
+     def tearDown(self):
+         unittest.TestCase.tearDown(self)
+         del self.m_top_dir
+ 
+     def testDownloadFailure(self):
+         mock = MockDataSynchronizer()
+-        with py.test.raises(DownloadFailed):
++        with pytest.raises(DownloadFailed):
+             mock.downloadAllFiles()
+ 
+     def testOverwritingPolicy(self):
+diff --git a/ElementsServices/tests/python/fixtures/TestDataSynchronizer.py b/ElementsServices/tests/python/fixtures/TestDataSynchronizer.py
+index b003e9f2..16e3a7ec 100644
+--- a/ElementsServices/tests/python/fixtures/TestDataSynchronizer.py
++++ b/ElementsServices/tests/python/fixtures/TestDataSynchronizer.py
+@@ -14,7 +14,7 @@
+ # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ #
+ 
+-import py.test
++import pytest
+ import os.path
+ 
+ from ElementsServices.DataSync.DataSyncUtils import dataSyncConfFilePath
+@@ -43,7 +43,7 @@ class TestDataSynchronizer (object):
+             assert os.path.isfile(f), "File not found: " + f + " using command: " \
+                 +synchronizer.createDownloadCommand(dependency_config.getFileMap()[f], f)
+             os.remove(f)
+-    
++
+     @classmethod
+     def checkDownloadTestData(cls, connection):
+         dependency = theDependencyConfig()
+@@ -62,6 +62,6 @@ class TestDataSynchronizer (object):
+     @classmethod
+     def checkDownloadErrorReport(cls, connection):
+         dependency = dataSyncConfFilePath(theInvalidDependencyConfig())
+-        with py.test.raises(DownloadFailed):
++        with pytest.raises(DownloadFailed):
+             sync = DataSync(connection, dependency)
+             sync.download()
+diff --git a/cmake/ElementsProjectConfig.cmake b/cmake/ElementsProjectConfig.cmake
+index 339b0f50..4fc8c6ec 100644
+--- a/cmake/ElementsProjectConfig.cmake
++++ b/cmake/ElementsProjectConfig.cmake
+@@ -430,7 +430,7 @@ macro(elements_project project version)
+         message(WARNING "The Nose python test framework cannot be found")
+         find_package(PyTest QUIET)
+         if(PYTEST_FOUND)
+-          message(WARNING "Using Py.Test instead")
++          message(WARNING "Using PyTest instead")
+           set(PYFRMK_TEST ${PYTEST_EXECUTABLE})
+           set(PYFRMK_NAME "PyTest")
+         endif()
+@@ -438,11 +438,11 @@ macro(elements_project project version)
+     else()
+       find_package(PyTest QUIET)
+       if(PYTEST_FOUND)
+-        message(STATUS "Using the Py.Test python test framework")
++        message(STATUS "Using the PyTest python test framework")
+         set(PYFRMK_TEST ${PYTEST_EXECUTABLE})
+         set(PYFRMK_NAME "PyTest")
+       else()
+-        message(WARNING "The Py.Test python test framework cannot be found")
++        message(WARNING "The PyTest python test framework cannot be found")
+         find_package(Nose QUIET)
+         if(NOSE_FOUND)
+           message(WARNING "Using Nose instead")
+@@ -3639,7 +3639,7 @@ endfunction()
+ #                     )
+ #
+ # Add the python files in the directory as test. It collects the python test files
+-# and add a test for the python test framework (py.test, nose or unittest)
++# and add a test for the python test framework (pytest, nose or unittest)
+ #---------------------------------------------------------------------------------------------------
+ function(add_python_test_dir)
+ 
+diff --git a/cmake/modules/FindPyTest.cmake b/cmake/modules/FindPyTest.cmake
+index f35ed217..6215ff0d 100644
+--- a/cmake/modules/FindPyTest.cmake
++++ b/cmake/modules/FindPyTest.cmake
+@@ -3,7 +3,7 @@ if (NOT PYTEST_FOUND)
+     find_package(PythonInterp ${PYTHON_EXPLICIT_VERSION})
+     
+     set(explicit_pytest)
+-    set(implicit_pytest py.test)
++    set(implicit_pytest pytest)
+ 
+     if(PYTHON_EXPLICIT_VERSION)
+       set(explicit_pytest ${implicit_pytest}-${PYTHON_EXPLICIT_VERSION})
