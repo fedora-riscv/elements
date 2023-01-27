@@ -1,0 +1,24 @@
+From 14bb2af7fb4ad3a1f00800942b700039ca8291b9 Mon Sep 17 00:00:00 2001
+From: "Benjamin A. Beasley" <code@musicinmybrain.net>
+Date: Thu, 26 Jan 2023 20:57:26 -0500
+Subject: [PATCH] Add missing #include directive for GCC 13
+
+---
+ ElementsKernel/src/Lib/ModuleInfo.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/ElementsKernel/src/Lib/ModuleInfo.cpp b/ElementsKernel/src/Lib/ModuleInfo.cpp
+index 98a4a7bb..08c23c9b 100644
+--- a/ElementsKernel/src/Lib/ModuleInfo.cpp
++++ b/ElementsKernel/src/Lib/ModuleInfo.cpp
+@@ -33,6 +33,7 @@
+ 
+ #include <array>
+ #include <cerrno>
++#include <cstdint>
+ #include <cstdio>
+ #include <cstdlib>
+ #include <cstring>
+-- 
+2.39.1
+
