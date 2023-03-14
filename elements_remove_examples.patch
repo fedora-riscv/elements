@@ -1,9 +1,9 @@
 diff --git a/ElementsExamples/CMakeLists.txt b/ElementsExamples/CMakeLists.txt
 deleted file mode 100644
-index 2a953172..00000000
+index fc7bfad1..00000000
 --- a/ElementsExamples/CMakeLists.txt
 +++ /dev/null
-@@ -1,364 +0,0 @@
+@@ -1,374 +0,0 @@
 -# Declare ElementsExamples as an Elements module
 -elements_subdir(ElementsExamples)
 -
@@ -14,7 +14,7 @@ index 2a953172..00000000
 -# Declare external library dependencies
 -#    This module is using the Boost C++ library
 -#    CppUnit and GMock are optional dependencies
--find_package(Boost REQUIRED COMPONENTS filesystem thread system program_options unit_test_framework)
+-find_package(Boost REQUIRED COMPONENTS unit_test_framework)
 -find_package(CppUnit)
 -find_package(GMock)
 -
@@ -23,38 +23,42 @@ index 2a953172..00000000
 -#    ElementsExamples is the library name
 -#    src/Lib/*.cpp are the source files
 -elements_add_library(ElementsExamples src/lib/default/*.cpp src/lib/default/*.c
--                     LINK_LIBRARIES Boost ElementsKernel
+-                     INCLUDE_DIRS  ElementsKernel
+-                     LINK_LIBRARIES  ElementsKernel
 -                     PUBLIC_HEADERS ElementsExamples)
+-add_library(Elements::Examples ALIAS ElementsExamples)
 -
 -elements_add_library(ElementsOther src/lib/other/*.cpp
--                     LINK_LIBRARIES Boost ElementsKernel
+-                     INCLUDE_DIRS  ElementsKernel
+-                     LINK_LIBRARIES  ElementsKernel
 -                     PUBLIC_HEADERS ElementsExamples)
+-add_library(Elements::Other ALIAS ElementsOther)
 -
 -
 -#===== Executables =============================================================
 -# Instruction for creating a C++ executable
 -#    CppProgramExample is the executable name
 -#    src/Program/ProgramExample.cpp is the source file
--elements_add_executable(CppProgramExample src/program/ProgramExample.cpp
--                        INCLUDE_DIRS Boost ElementsExamples ElementsOther
--                        LINK_LIBRARIES Boost ElementsExamples ElementsOther)
+-elements_add_executable(CppProgramExample src/program/Program.cpp
+-                        INCLUDE_DIRS ElementsExamples ElementsOther
+-                        LINK_LIBRARIES ElementsExamples ElementsOther)
 -
--elements_add_executable(CppExtProgramExample src/program/ExtProgramExample.cpp
--                        INCLUDE_DIRS Boost ElementsExamples ElementsOther
--                        LINK_LIBRARIES Boost ElementsExamples ElementsOther)
+-elements_add_executable(CppExtProgramExample src/program/ExtProgram.cpp
+-                        INCLUDE_DIRS ElementsExamples ElementsOther
+-                        LINK_LIBRARIES ElementsExamples ElementsOther)
 -
 -
--elements_add_executable(ElementsSimpleProgramExample src/program/SimpleProgramExample.cpp
--                        INCLUDE_DIRS Boost ElementsExamples
--                        LINK_LIBRARIES Boost ElementsExamples)
+-elements_add_executable(ElementsSimpleProgramExample src/program/SimpleProgram.cpp
+-                        INCLUDE_DIRS ElementsExamples
+-                        LINK_LIBRARIES ElementsExamples)
 -
--elements_add_executable(ElementsAnotherSimpleProgramExample src/program/AnotherSimpleProgramExample.cpp
--                        INCLUDE_DIRS Boost ElementsExamples
--                        LINK_LIBRARIES Boost ElementsExamples)
+-elements_add_executable(ElementsAnotherSimpleProgramExample src/program/AnotherSimpleProgram.cpp
+-                        INCLUDE_DIRS ElementsExamples
+-                        LINK_LIBRARIES ElementsExamples)
 -
--elements_add_executable(ElementsProgramExampleWithArguments src/program/ProgramExampleWithArguments.cpp
--                        INCLUDE_DIRS Boost ElementsExamples
--                        LINK_LIBRARIES Boost ElementsExamples)
+-elements_add_executable(ElementsProgramExampleWithArguments src/program/ProgramWithArguments.cpp
+-                        INCLUDE_DIRS ElementsExamples
+-                        LINK_LIBRARIES ElementsExamples)
 -
 -# Example of a pure C program with a C++-compatible header file example.
 -elements_add_executable(CProgramExample src/CProgram/*.c
@@ -111,8 +115,8 @@ index 2a953172..00000000
 -# LINK_LIBRARIES argument.
 -elements_add_unit_test(BoostClassExampleWithMain tests/src/Boost/ClassExample_test.cpp tests/src/Boost/TestMain.cpp
 -                       EXECUTABLE BoostClassExampleWithMain_test
--                       INCLUDE_DIRS ElementsExamples
--                       LINK_LIBRARIES Boost ElementsExamples)
+-                       INCLUDE_DIRS Boost::unit_test_framework ElementsExamples
+-                       LINK_LIBRARIES Boost::unit_test_framework ElementsExamples)
 -
 -elements_add_unit_test(ModuleInfo tests/src/Boost/ModuleInfo_test.cpp
 -                       EXECUTABLE ElementsExamplesModuleInfo_test
@@ -157,8 +161,8 @@ index 2a953172..00000000
 -# Test with the CppUnit library. The TestMain.cpp is not generated
 -elements_add_unit_test(OtherClassExampleWithMain tests/src/CppUnit/ClassExample_test.cpp tests/src/CppUnit/TestMain.cpp
 -                       EXECUTABLE ElementsExamples_OtherClassExampleWithMain_test
--                       LINK_LIBRARIES CppUnit ElementsExamples
--                       INCLUDE_DIRS CppUnit ElementsExamples
+-                       LINK_LIBRARIES CppUnit::cppunit ElementsExamples
+-                       INCLUDE_DIRS CppUnit::cppunit ElementsExamples
 -                       LABELS CustomLabel CppUnit)
 -endif()
 -
@@ -187,12 +191,12 @@ index 2a953172..00000000
 -#====== Build Tests =================================================================
 -
 -
--elements_add_executable(BackTraceExample src/program/BackTraceExample.cpp
+-elements_add_executable(BackTraceExample src/program/BackTrace.cpp
 -                        INCLUDE_DIRS ElementsExamples
 -                        LINK_LIBRARIES ElementsExamples)
 -elements_add_test(BackTraceFailure COMMAND BackTraceExample FAILS)
 -
--elements_add_executable(FloatPrecisionExample src/program/FloatPrecisionExample.cpp
+-elements_add_executable(FloatPrecisionExample src/program/FloatPrecision.cpp
 -                        INCLUDE_DIRS ElementsExamples
 -                        LINK_LIBRARIES ElementsExamples)
 -elements_add_test(FloatPrecsionExampleWorks COMMAND FloatPrecisionExample LABELS Float Build)
@@ -200,7 +204,7 @@ index 2a953172..00000000
 -
 -find_package(GSL QUIET)
 -if(GSL_FOUND)
--elements_add_executable(GslExample src/program/GslExample.cpp
+-elements_add_executable(GslExample src/program/Gsl.cpp
 -                        INCLUDE_DIRS GSL ElementsExamples
 -                        LINK_LIBRARIES GSL ElementsExamples)
 -elements_add_test(GSLWorks COMMAND GslExample LABELS GSL Build)
@@ -209,7 +213,7 @@ index 2a953172..00000000
 -
 -find_package(HealpixCpp QUIET)
 -if(HEALPIXCPP_FOUND AND HEALPIXCPP_NEW_LAYOUT)
--elements_add_executable(HealpixExample src/program/HealpixExample.cpp
+-elements_add_executable(HealpixExample src/program/Healpix.cpp
 -                        INCLUDE_DIRS HealpixCpp ElementsExamples
 -                        LINK_LIBRARIES HealpixCpp ElementsExamples)
 -elements_add_test(HealpixCppWorks COMMAND HealpixExample LABELS Healpix Build)
@@ -218,7 +222,7 @@ index 2a953172..00000000
 -
 -find_package(XercesC QUIET)
 -if(XERCESC_FOUND)
--elements_add_executable(XercesExample src/program/XercesExample.cpp
+-elements_add_executable(XercesExample src/program/Xerces.cpp
 -                        INCLUDE_DIRS XercesC ElementsExamples
 -                        LINK_LIBRARIES XercesC ElementsExamples)
 -elements_add_test(XercesCWorks COMMAND XercesExample LABELS Xerces Build)
@@ -227,7 +231,7 @@ index 2a953172..00000000
 -
 -find_package(WCSLIB QUIET)
 -if(WCSLIB_FOUND)
--elements_add_executable(WcsExample src/program/WcsExample.cpp
+-elements_add_executable(WcsExample src/program/Wcs.cpp
 -                        INCLUDE_DIRS WCSLIB ElementsExamples
 -                        LINK_LIBRARIES WCSLIB ElementsExamples)
 -elements_add_test(WCSLIBWorks COMMAND WcsExample LABELS Wcs Build)
@@ -236,7 +240,7 @@ index 2a953172..00000000
 -
 -find_package(FFTW QUIET)
 -if(FFTW_FOUND)
--elements_add_executable(FftwExample src/program/FftwExample.cpp
+-elements_add_executable(FftwExample src/program/Fftw.cpp
 -                        INCLUDE_DIRS FFTW ElementsExamples
 -                        LINK_LIBRARIES FFTW ElementsExamples)
 -elements_add_test(FFTWWorks COMMAND FftwExample LABELS Fftw Build)
@@ -244,7 +248,7 @@ index 2a953172..00000000
 -
 -find_package(Eigen3 QUIET)
 -if(EIGEN3_FOUND)
--elements_add_executable(EigenExample src/program/EigenExample.cpp
+-elements_add_executable(EigenExample src/program/Eigen.cpp
 -                        LINK_LIBRARIES Eigen3 ElementsExamples
 -                        INCLUDE_DIRS Eigen3 ElementsExamples)
 -elements_add_test(EigenWorks COMMAND EigenExample LABELS Eigen Build)
@@ -252,7 +256,7 @@ index 2a953172..00000000
 -
 -find_package(CCfits QUIET)
 -if(CCFITS_FOUND)
--elements_add_executable(CCfitsExample src/program/CCfitsExample.cpp
+-elements_add_executable(CCfitsExample src/program/CCfits.cpp
 -                        LINK_LIBRARIES CCfits ElementsExamples
 -                        INCLUDE_DIRS CCfits ElementsExamples)
 -elements_add_test(CCfitsWorks COMMAND CCfitsExample LABELS CCfits Build)
@@ -260,7 +264,7 @@ index 2a953172..00000000
 -
 -find_package(Cfitsio QUIET)
 -if(CFITSIO_FOUND AND CFITSIO_IS_REENTRANT)
--elements_add_executable(CfitsioExample src/program/CfitsioExample.cpp
+-elements_add_executable(CfitsioExample src/program/Cfitsio.cpp
 -                        LINK_LIBRARIES Cfitsio ElementsExamples
 -                        INCLUDE_DIRS Cfitsio ElementsExamples)
 -elements_add_test(CfitsioWorks COMMAND CfitsioExample LABELS Cfitsio Build)
@@ -268,13 +272,13 @@ index 2a953172..00000000
 -
 -find_package(GnuAstro QUIET)
 -if(GNUASTRO_FOUND)
--elements_add_executable(GnuAstroExample src/program/GnuAstroExample.cpp
+-elements_add_executable(GnuAstroExample src/program/GnuAstro.cpp
 -                        LINK_LIBRARIES GnuAstro ElementsExamples
 -                        INCLUDE_DIRS GnuAstro ElementsExamples)
 -elements_add_test(GnuAstroWorks COMMAND GnuAstroExample LABELS GnuAstro Build)
 -endif()
 -
--elements_add_executable(OpenMPExample src/program/OpenMPExample.cpp
+-elements_add_executable(OpenMPExample src/program/OpenMP.cpp
 -                        LINK_LIBRARIES ElementsExamples
 -                        INCLUDE_DIRS ElementsExamples)
 -elements_add_test(OpenMPWorks COMMAND OpenMPExample LABELS OpenMP Build)
@@ -329,6 +333,8 @@ index 2a953172..00000000
 -if(SWIG_FOUND AND PYTHONLIBS_FOUND)
 -  elements_add_python_program(SwigProgramExample ElementsExamples.SwigProgramExample)
 -endif()
+-
+-
 -#===== Test that the python program does run ========================================
 -elements_add_test(PythonProgramExampleRun COMMAND PythonProgramExample)
 -elements_add_test(PythonProgramExampleNoConfigFile COMMAND PythonProgramExample --config-file=toto.conf FAILS)
@@ -341,11 +347,15 @@ index 2a953172..00000000
 -  elements_add_test(PyBind11ProgramExampleRun COMMAND PyBind11ProgramExample)
 -endif()
 -
--elements_add_python_program(PythonTestProgramExample ElementsExamples.PythonTestProgramExample)
--
 -elements_install_scripts()
 -
+-elements_add_python_program(PythonTestProgramExample ElementsExamples.PythonTestProgramExample)
+-
 -elements_add_test(PythonTestProgram COMMAND PythonTestProgramExample)
+-
+-elements_add_python_program(PythonSpawnExample ElementsExamples.SpawnExample)
+-
+-elements_add_test(PythonSpawnTest COMMAND PythonSpawnExample)
 -
 -
 -elements_add_test(ScriptThatSucceeds COMMAND ScriptThatSucceeds_test LABELS CustomLabel)
