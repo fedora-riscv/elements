@@ -1,0 +1,15 @@
+diff --git a/cmake/ElementsLocations.cmake b/cmake/ElementsLocations.cmake
+index f04b9ac0..c36b1151 100644
+--- a/cmake/ElementsLocations.cmake
++++ b/cmake/ElementsLocations.cmake
+@@ -180,9 +180,8 @@ if(SQUEEZED_INSTALL)
+   find_package(PythonInterp ${PYTHON_EXPLICIT_VERSION})
+ 
+   execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c"
+-                  "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True, prefix='${CMAKE_INSTALL_PREFIX}').replace('${CMAKE_INSTALL_PREFIX}/',''))"
++                  "from sysconfig import get_path; print(get_path('platlib').replace(get_path('data') + '/',''))"
+                   OUTPUT_VARIABLE PYTHON_INSTALL_SUFFIX
+-                  ERROR_QUIET
+                   OUTPUT_STRIP_TRAILING_WHITESPACE)
+ 
+   set(PYTHON_DYNLIB_INSTALL_SUFFIX ${PYTHON_INSTALL_SUFFIX} CACHE STRING "Final suffix for the install directory of the python binary files" FORCE)
